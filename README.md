@@ -1,43 +1,41 @@
-# DEX 示例项目
+# DEX Example Project
 
-一个仿照 Uniswap V2 设计的去中心化交易所示例，包含：
+A simple decentralized exchange example with:
 
-- 使用 Foundry 管理和编译的智能合约
-- 提供链上交易对信息的 Node.js 后端 API
-- 仿 Uniswap UI 的前端页面（仅顶部导航切换），支持 Swap、添加流动性
+- Smart contracts managed and built with Foundry
+- Node.js backend API reading on-chain pairs
+- Simple web UI for Swap and Add Liquidity (top navigation controls tab switching)
 
 
-## 目录结构
+## Directory
 
-- contracts/ 合约源码
+- contracts/
   - DexFactory.sol
   - DexPair.sol
   - DexRouter.sol
   - DexERC20.sol
-  - interfaces/ 基础接口定义
-  - libraries/ 工具库
-  - tokens/ 测试代币与 WETH
+  - interfaces/
+  - libraries/
+  - tokens/ (TestToken, WETH)
 - script/
-  - Deploy.s.sol 合约部署脚本（Foundry）
+  - Deploy.s.sol (Foundry deployment script)
 - test/
-  - Dex.t.sol 简单集成测试
+  - Dex.t.sol
 - backend/
-  - index.js 后端服务入口
-  - package.json 后端依赖声明
+  - index.js
+  - package.json
 - frontend/
-  - index.html 仿 Uniswap 风格 UI
-  - app.js 前端逻辑
-- foundry.toml Foundry 配置
+  - index.html
+  - app.js
+- foundry.toml
 
 
-## 环境准备
-
-需要安装：
+## Requirements
 
 - Node.js 16+
-- Foundry（包含 forge）
+- Foundry (forge)
 
-安装 Foundry：
+Install Foundry:
 
 ```bash
 curl -L https://foundry.paradigm.xyz | bash
@@ -45,135 +43,133 @@ foundryup
 ```
 
 
-## 合约：使用 Foundry（Sepolia）
+## Contracts (Sepolia via Foundry)
 
-### 编译与测试
+### Build & Test
 
 ```bash
 forge build
 forge test
 ```
 
-### 环境变量
+### Environment Variables
 
-项目根目录 `.env`：
+Root `.env`:
 
 ```env
 SEPOLIA_RPC_URL=https://ethereum-sepolia-rpc.publicnode.com
-PRIVATE_KEY=0x你的私钥
-ETHERSCAN_API_KEY=你的EtherscanKey
+PRIVATE_KEY=0xYOUR_PRIVATE_KEY
+ETHERSCAN_API_KEY=YOUR_ETHERSCAN_KEY
 ```
 
-Foundry 配置在 `foundry.toml` 中已加入：
+Foundry config in `foundry.toml`:
 
 ```toml
 [rpc_endpoints]
 sepolia = "${SEPOLIA_RPC_URL}"
 ```
 
-### 部署
-
-运行部署脚本：
+### Deploy
 
 ```bash
 forge script script/Deploy.s.sol --rpc-url sepolia --broadcast
 ```
 
-脚本会部署并输出：
+The script prints:
 
-- Deployer 地址
-- WETH 地址
-- DexFactory 地址
-- DexRouter 地址
-- TokenA、TokenB 地址
+- Deployer
+- WETH
+- DexFactory
+- DexRouter
+- TokenA / TokenB
 
 
-## 后端：Node.js API
+## Backend (Node.js API)
 
-职责：
+Responsibilities:
 
-- 连接链上 DexFactory
-- 提供交易对列表 / 交易对详情接口
+- Connect to DexFactory on-chain
+- Provide pairs list and pair details
 
-### 安装依赖
+### Install
 
 ```bash
 cd backend
 npm install
 ```
 
-### 配置环境变量
+### Environment
 
-`backend/.env`：
+`backend/.env`:
 
 ```env
 RPC_URL=https://ethereum-sepolia-rpc.publicnode.com
-FACTORY_ADDRESS=0x你的DexFactory地址
-ROUTER_ADDRESS=0x你的DexRouter地址
-WETH_ADDRESS=0x你的WETH地址
-TOKEN_A_ADDRESS=0x你的TokenA地址
-TOKEN_B_ADDRESS=0x你的TokenB地址
+FACTORY_ADDRESS=0xF7f4629Acb75e191b718D66FA7d5Bb8806945FEF
+ROUTER_ADDRESS=0xF38dA4109850EfB43ade657B7C29e4a5E9F7701E
+WETH_ADDRESS=0xE24BaC610e68891Fd99F44F1d278673ca46BdD6e
+TOKEN_A_ADDRESS=0xB758403751310bc9DBB3c68aCDCD068d84B71484
+TOKEN_B_ADDRESS=0x64D71dBa7428E7158aaf43F4eD06aEe0Dc1c5851
 PORT=4000
 ```
 
-### 启动后端服务
+### Run
 
 ```bash
 node index.js
 ```
 
-接口：
+Endpoints:
 
 - GET /health
 - GET /pairs
 - GET /pair/:address
 
 
-## 前端：仿 Uniswap UI
+## Frontend (Simple Web UI)
 
-位于 `frontend/`，使用 HTML + CSS + JS + ethers.js CDN。
+Located in `frontend/`, built with HTML/CSS/JS and ethers.js CDN.
 
-### 关键特性
+### Features
 
-- 仅顶部导航切换 Swap / Pool
-- 连接钱包时自动检测并切换到 Sepolia（必要时自动添加网络）
-- From 输入数量自动调用 `getAmountsOut` 估算 To 数量
-- 添加流动性默认预填部署出的 Token A/B 地址
+- Top navigation toggles Swap / Pool
+- Wallet connection requests Sepolia (adds network if missing)
+- Auto-quote: `getAmountsOut` fills To amount from From amount
+- Add Liquidity pre-fills Token A/B addresses
 
-### 配置
+### Config
 
-在 [app.js](file:///d:/SolidityProject/dex/frontend/app.js) 中设置：
+In [app.js](file:///d:/SolidityProject/dex/frontend/app.js):
 
 ```js
-const ROUTER_ADDRESS = "0x你的Router地址";
+const ROUTER_ADDRESS = "0xF38dA4109850EfB43ade657B7C29e4a5E9F7701E";
 const API_BASE = "http://localhost:4000";
 ```
 
-ethers CDN 使用：
+ethers CDN:
 
 ```html
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
 ```
 
-### 启动前端
+### Run
 
 ```bash
 npx http-server frontend -p 8080 --cors
 ```
 
-访问 `http://127.0.0.1:8080`。
+Open `http://127.0.0.1:8080`.
 
-### 使用流程
+### Flow
 
-1. 使用部署脚本将合约部署到 Sepolia，并记录地址
-2. 配置 `backend/.env` 的 RPC 和各合约地址，启动后端
-3. 修改前端 `ROUTER_ADDRESS`
-4. 打开前端页面，连接 MetaMask（Sepolia）
-5. 切到 Pool，输入 Token A/B 数量，添加流动性
-6. 切到 Swap，输入 From 数量，自动生成 To 数量，点击 Swap
+1. Deploy contracts to Sepolia and record addresses
+2. Configure `backend/.env` and run backend
+3. Update frontend `ROUTER_ADDRESS`
+4. Open frontend and connect MetaMask (Sepolia)
+5. Go to Pool, input Token A/B amounts, Add Liquidity
+6. Go to Swap, input From amount, confirm Swap
 
 
-## 注意事项
+## Notes
 
-- 示例脚本及测试代币仅用于测试环境，不要用于生产资金场景
-- 你的私钥仅用于部署与测试，请妥善保管，避免泄露
+- Example scripts and test tokens are for testing only
+- Keep your private key safe and never commit it
