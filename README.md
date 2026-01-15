@@ -17,17 +17,12 @@ A simple decentralized exchange example with:
   - interfaces/
   - libraries/
   - tokens/ (TestToken, WETH)
-- script/
-  - Deploy.s.sol (Foundry deployment script)
-- test/
-  - Dex.t.sol
 - backend/
   - index.js
-  - package.json
 - frontend/
   - index.html
   - app.js
-- foundry.toml
+  - style.css
 
 
 ## Requirements
