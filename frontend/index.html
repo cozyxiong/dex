@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>DEX</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <div class="header-left">
+                <div class="logo-dot"></div>
+                <div>DEX</div>
+            </div>
+            <nav class="nav">
+                <div class="nav-item active" data-nav="swap">Swap</div>
+                <div class="nav-item" data-nav="pool">Pool</div>
+            </nav>
+            <div class="header-right">
+                <div class="pill">
+                    <span>Network</span>
+                    <span id="networkLabel">Unknown</span>
+                </div>
+                <button id="connect" class="connect-btn">连接钱包</button>
+            </div>
+        </header>
+        <main class="content">
+            <div class="layout">
+                <section class="card">
+                    <div class="card-header">
+                        <div>
+                            <div class="card-title" id="cardTitle">Swap</div>
+                            <div class="card-subtitle" id="cardSubtitle">Swap tokens at constant product price</div>
+                        </div>
+                        <div class="account-label" id="accountShort"></div>
+                    </div>
+                    <div id="swapView">
+                        <div class="field-group">
+                            <div class="field-label-row">
+                                <div class="field-label">From</div>
+                                <div class="field-balance" id="swapFromBalance"></div>
+                            </div>
+                            <div class="field">
+                                <input id="swapAmountIn" placeholder="0.0">
+                                <button type="button" class="token-select" id="swapFromTokenBtn">
+                                    <span class="token-symbol" id="swapFromSymbol">Token A</span>
+                                    <span class="token-address" id="swapFromAddress"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="switch-row">
+                            <button type="button" class="switch-btn" id="swapSwitch">⇅</button>
+                        </div>
+
+                        <div class="field-group">
+                            <div class="field-label-row">
+                                <div class="field-label">To</div>
+                                <div class="field-balance" id="swapToBalance"></div>
+                            </div>
+                            <div class="field">
+                                <input id="swapAmountOutMin" placeholder="0.0">
+                                <button type="button" class="token-select" id="swapToTokenBtn">
+                                    <span class="token-symbol" id="swapToSymbol">Token B</span>
+                                    <span class="token-address" id="swapToAddress"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <button id="btnSwap" class="primary-btn">Swap</button>
+                        <div class="hint" id="swapHint"></div>
+                    </div>
+
+                    <div id="poolView" style="display:none">
+                        <div class="field-group">
+                            <div class="field-label-row">
+                                <div class="field-label">Token A</div>
+                                <div class="field-balance" id="lpABalance"></div>
+                            </div>
+                            <div class="field">
+                                <input id="lpAmountA" placeholder="0.0">
+                                <button type="button" class="token-select" id="lpTokenABtn">
+                                    <span class="token-symbol" id="lpASymbol">Token A</span>
+                                    <span class="token-address" id="lpAAddress"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="field-group">
+                            <div class="field-label-row">
+                                <div class="field-label">Token B</div>
+                                <div class="field-balance" id="lpBBalance"></div>
+                            </div>
+                            <div class="field">
+                                <input id="lpAmountB" placeholder="0.0">
+                                <button type="button" class="token-select" id="lpTokenBBtn">
+                                    <span class="token-symbol" id="lpBSymbol">Token B</span>
+                                    <span class="token-address" id="lpBAddress"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <button id="btnAddLiquidity" class="primary-btn">添加流动性</button>
+                        <div class="pool-card">
+                            <div>When you add liquidity, you receive LP tokens.</div>
+                            <div class="pool-row">
+                                <span>Your position</span>
+                                <span id="lpPosition">No position</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="status-bar" id="status"></div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="./app.js"></script>
+</body>
+</html>
