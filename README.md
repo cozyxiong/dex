@@ -4,7 +4,7 @@ A simple decentralized exchange example with:
 
 - Smart contracts managed and built with Foundry
 - Node.js backend API reading on-chain pairs
-- Simple web UI for Swap and Add Liquidity (top navigation controls tab switching)
+- Simple web UI for Swap and Add Liquidity
 
 
 ## Directory
